@@ -17,7 +17,7 @@ type Response struct {
 
 var tpl = template.Must(template.ParseFiles("cmd/index.html"))
 
-func BasicHandler(w http.ResponseWriter, r *http.Request) {
+func BasisHandler(w http.ResponseWriter, r *http.Request) {
 	err := tpl.Execute(w, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

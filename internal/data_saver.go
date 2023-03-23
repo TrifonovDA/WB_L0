@@ -87,7 +87,7 @@ func SaveData(order model.Order, db_conn *pgxpool.Pool, ctx context.Context, mu 
 		}
 	}
 
-	//инсертим ордеры
+	//Промежуточно генерируем ключ для связки юзера с ордером
 	var user_uid_for_order uuid.UUID
 	switch new_user_flg {
 	case true:
@@ -110,6 +110,7 @@ func SaveData(order model.Order, db_conn *pgxpool.Pool, ctx context.Context, mu 
 	}
 
 	//инсертим платежную информацию
+	//заметил что в модели данных order_uid == transaction, поэтому дополнительного ключа не добавляю, считаю, что это условие выполнено.
 	row_payment, err_payment := db_conn.Query(ctx, query_in_payment_info, order.Payment.Transaction, order.Payment.RequestId, order.Payment.Currency,
 		order.Payment.Provider, order.Payment.Amount, order.Payment.PaymentDt, order.Payment.Bank, order.Payment.DeliveryCost,
 		order.Payment.GoodsTotal, order.Payment.CustomFee)

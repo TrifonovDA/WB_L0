@@ -19,7 +19,7 @@ func main() {
 	defer conn.Close()
 	var sum int32
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1; i++ {
 		wg.Add(1)
 		go func(i int) {
 			err := publishing(conn, &mu, i)
@@ -46,7 +46,7 @@ func publishing(conn stan.Conn, mutex *sync.Mutex, i int) error {
 	var Request = model.Order{
 		OrderUid:    OrderUid.String(),
 		TrackNumber: "WBILMTESTTRACK",
-		Entry:       "WBIL",
+		Entry:       "boor",
 		Delivery: struct {
 			Name    string `json:"name"`
 			Phone   string `json:"phone"`
@@ -100,7 +100,8 @@ func publishing(conn stan.Conn, mutex *sync.Mutex, i int) error {
 			Brand:       "Vivienne Sabo",
 			Status:      202,
 		},
-			{ChrtId: 9934931,
+			{
+				ChrtId:      9934931,
 				TrackNumber: "WBILMTESTTRACK",
 				Price:       453,
 				Rid:         "ab4219087a764ae0btest",
@@ -110,10 +111,24 @@ func publishing(conn stan.Conn, mutex *sync.Mutex, i int) error {
 				TotalPrice:  317,
 				NmId:        2389212,
 				Brand:       "Vivienne Sabo",
-				Status:      202},
+				Status:      202,
+			},
+			{
+				ChrtId:      9934933,
+				TrackNumber: "WBILMTESTTRACK4",
+				Price:       900,
+				Rid:         "ab4219087a764ae0btest",
+				Name:        "Mascaras",
+				Sale:        35,
+				Size:        "4",
+				TotalPrice:  555,
+				NmId:        2389211,
+				Brand:       "Cav Empt",
+				Status:      202,
+			},
 		},
 
-		Locale:            "en",
+		Locale:            "jp",
 		InternalSignature: "",
 		CustomerId:        "test",
 		DeliveryService:   "meest",
@@ -126,14 +141,10 @@ func publishing(conn stan.Conn, mutex *sync.Mutex, i int) error {
 	if err != nil {
 		fmt.Println("marshalling error")
 	}
-	//mutex.Lock()
-	//defer mutex.Unlock()
-	//подумать над PublishAsync
-	err = conn.Publish("test-cluster", marshalling_req) //, ackHandler)
-	//fmt.Println(txt)
+	//fmt.Println(marshalling_req)
+	err = conn.Publish("test-cluster", marshalling_req)
 	if err != nil {
 		return err
 	}
-	//fmt.Println("blya", i)
 	return nil
 }

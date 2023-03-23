@@ -3,6 +3,7 @@ package nats_streaming_tools
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/TrifonovDA/WB/internal"
 	model "github.com/TrifonovDA/WB/internal/model"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -21,12 +22,12 @@ func HandleNatsMessage(conn stan.Conn, ch_err chan error, db_conn *pgxpool.Pool,
 		sc, err := conn.Subscribe("test-cluster", func(m *stan.Msg) {
 			err := json.Unmarshal(m.Data, &order)
 			if err != nil {
-				ch_err <- err
+				ch_err <- fmt.Errorf("Unmarshaling nats_streaming error: %v", err)
 				return
 			}
 			//добавляем значение в кэш
 			go model.Cache.Insert(order)
-			//распараллелить, отправить ошибки в канал!
+			//распараллеленное сохранение, ошибки отправляются в канал
 			go internal.SaveData(order, db_conn, context.Background(), &datasaver_mu, ch_err)
 
 		}, stan.DurableName("my-durable"))

@@ -18,6 +18,7 @@ const update_cache = "select oi.order_uid, oi.track_number, oi.entry, ui.name, u
 func LoadData(pool *pgxpool.Pool, mu *sync.Mutex, ctx context.Context, ch_error chan error, cache *model.Simple_cache) {
 	mu.Lock()
 	defer mu.Unlock()
+	//работает одна горутина, поэтому не должно быть проблем с конкурентностью
 	rows, err := pool.Query(ctx, update_cache)
 	if err != nil {
 		log.Printf("Error by getting rows: %v", err)
@@ -26,6 +27,8 @@ func LoadData(pool *pgxpool.Pool, mu *sync.Mutex, ctx context.Context, ch_error 
 	defer rows.Close()
 
 	var pre_value string
+	//считыываем построчно. Не удалось создать массив итемов в запросе,
+	//поэтому приходится использовать pre_value(прошлый рассмотренный order_uid) и добавлять отдельно итемы в структуру, если прошлый order_uid == новый order_uid.
 	for rows.Next() {
 		var order model.Order
 		var item model.Item

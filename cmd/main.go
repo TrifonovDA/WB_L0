@@ -25,9 +25,6 @@ var fs = http.FileServer(http.Dir("cmd/assets"))
 func main() {
 	var mu_loaddata sync.Mutex
 	var mu sync.Mutex
-	//создание кэша
-	//var cache model.Cache
-	//cache = cache.NewCache()
 	//создание каналов для обработки двух типов ошибок
 	exit_ch := make(chan error)
 	errors_ch := make(chan error, 4)
@@ -52,7 +49,7 @@ func main() {
 	//поддержка метода получения информации по ордеру и базового пути "/", а также поддержка стилей
 	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	mux.HandleFunc(get_order_info, internal.Get_order_info_handler)
-	mux.HandleFunc(basis, internal.BasicHandler)
+	mux.HandleFunc(basis, internal.BasisHandler)
 
 	log.Printf("start listening http")
 	err := http.ListenAndServe(":60601", mux)
