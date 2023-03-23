@@ -1,0 +1,4 @@
+GET http://localhost:60606/get_order_info?order_uid=6cfc6e05-c835-11ed-9840-00ffdf3639d9 HTTP/1.1
+
+
+###

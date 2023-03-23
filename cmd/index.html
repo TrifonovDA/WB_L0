@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WB_l0</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main>
+    <header>
+        <a class="logo" href="/">Order uid</a>
+        <form action="/get_order_info" method="GET">
+            <input autofocus class="order_uid-input" value=""
+                   placeholder="Enter an order uid" type="search" name="order_uid">
+        </form>
+        <a href="https://github.com/freshman-tech/news" class="button
+     github-button">View on Github</a>
+    </header>
+    <section class="container">
+        <h5 class="first_level">
+            OrderUid: {{.Order.OrderUid}} <br>
+            TrackNumber: {{.Order.TrackNumber}} <br>
+            Entry: {{.Order.Entry}} <br>
+            Delivery:
+        </h5>
+        <h6 class="second_level">
+            Name: {{.Order.Delivery.Name}} <br>
+            Phone: {{.Order.Delivery.Phone}} <br>
+            Zip: {{.Order.Delivery.Zip}} <br>
+            City: {{.Order.Delivery.City}} <br>
+            Address: {{.Order.Delivery.Address}} <br>
+            Region: {{.Order.Delivery.Region}} <br>
+            Email: {{.Order.Delivery.Email}}
+        </h6>
+        <h5 class="first_level">
+            Payment:
+        </h5>
+        <h6 class="second_level">
+            Transaction: {{.Order.Payment.Transaction}} <br>
+            RequestId: {{.Order.Payment.RequestId}} <br>
+            Currency: {{.Order.Payment.Currency}} <br>
+            Provider: {{.Order.Payment.Provider}} <br>
+            Amount: {{.Order.Payment.Amount}} <br>
+            PaymentDt: {{.Order.Payment.PaymentDt}} <br>
+            Bank: {{.Order.Payment.Bank}} <br>
+            DeliveryCost: {{.Order.Payment.DeliveryCost}} <br>
+            GoodsTotal: {{.Order.Payment.GoodsTotal}} <br>
+            CustomFee: {{.Order.Payment.CustomFee}}
+        </h6>
+        <h5 class="first_level"> Items: </h5>
+        <ul class="first_level">
+            {{ range .Order.Items }}
+            <h5 class="first_level"> ChrtId: {{.ChrtId}} </h5>
+            <h6 class="second_level">
+                TrackNumber: {{.TrackNumber}} <br>
+                Price: {{.Price}} <br>
+                Rid: {{.Rid}} <br>
+                Name: {{.Name}} <br>
+                Sale: {{.Sale}} <br>
+                Size: {{.Size}} <br>
+                TotalPrice: {{.TotalPrice}} <br>
+                NmId: {{.NmId}} <br>
+                Brand: {{.Brand}} <br>
+                Status: {{.Status}}
+            </h6>
+            {{end}}
+        </ul>
+        <h5 class="first_level">
+            Locale: {{.Order.Locale}} <br>
+            InternalSignature: {{.Order.InternalSignature}} <br>
+            CustomerId: {{.Order.CustomerId}} <br>
+            DeliveryService: {{.Order.DeliveryService}} <br>
+            Shardkey: {{.Order.Shardkey}} <br>
+            SmId: {{.Order.SmId}} <br>
+            DateCreated: {{.Order.DateCreated}} <br>
+            OofShard: {{.Order.OofShard}}
+        </h5>
+    </section>
+</main>
+</body>
+</html>
